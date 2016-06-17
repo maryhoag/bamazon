@@ -1,11 +1,11 @@
-var inqurirer = require('inqurirer');
+var inquirer = require('inquirer');
 var mysql = require('mysql');
 //establish connection
 var connection = mysql.createConnection({
-	host: localhost,
+	host: 'localhost',
 	port: 3306,
 	user: 'root',
-	password: 'odetter1',
+	password: 'odette1',
 	database: 'bamazon_db'
 });
 //verify connection
@@ -18,7 +18,7 @@ connection.connect(function(error) {
 //customer functions object
 var customer = {
 	//display products to customer
-	display: function {
+	display: function() {
 		connection.query('SELECT * FROM products', function (error, results) {
 			if(error) throw error;
 			//display all items in the inventory
@@ -27,11 +27,12 @@ var customer = {
 				console.log('-----------------------------------------');
 			}
 	// body...
-		}),
+		})
+	},
 	//query what the customer wants and how many they want	
-	want_what: function {
+	want_what: function() {
 		//inquirer function
-		inqurirer.prompt([
+		inquirer.prompt([
 			{ type: 'input',
 				name: 'purchase',
 				question: 'What\'s the item id of the product you want to order?',
@@ -46,9 +47,16 @@ var customer = {
 					else if(results.stock < answer.quantity) {
 						return console.log('We don\'t have enough to compete your order.');
 					} else {
-						connection.query('UPDATE')
+						var new_stock = results. stock - answer.quantity;
+						connection.query('UPDATE products SET ? WHERE ?' [{stock: new_stock}, {item_id: answer.purchase}], function(err) {
+							if(err) throw err;
+							var total_price = answer.quantity * results.price;
+							console.log('Your total purchase price is $' + total_price);
+						})
 					}
 
 				})
 
 			})
+	}
+};
