@@ -60,3 +60,6 @@ var customer = {
 			})
 	}
 };
+
+customer.display();
+customer.want_what();
