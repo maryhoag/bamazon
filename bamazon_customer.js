@@ -32,33 +32,38 @@ var customer = {
 	//query what the customer wants and how many they want	
 	want_what: function() {
 		//inquirer function
+		console.log('i run');
 		inquirer.prompt([
 			{ type: 'input',
 				name: 'purchase',
-				question: 'What\'s the item id of the product you want to order?',
+				question: 'What\'s the item id of the product you want to order?'
 			},
 			{ type: 'input',
 				name: 'quantity',
 				question: 'How many do you want to purchase?'
-			}], function(answer) {
+			}]).then(function(answer) {
 				//get the product info from the db
+				console.log('still running');
 				connection.query('SELECT item_id FROM products', function(error, results) {
-					if(error) throw error;
-					else if(results.stock < answer.quantity) {
+					if(error){ 
+						throw error;
+					} else if(results.stock < answer.quantity) {
 						return console.log('We don\'t have enough to compete your order.');
 					} else {
-						var new_stock = results. stock - answer.quantity;
-						connection.query('UPDATE products SET ? WHERE ?' [{stock: new_stock}, {item_id: answer.purchase}], function(err) {
-							if(err) throw err;
-							var total_price = answer.quantity * results.price;
-							console.log('Your total purchase price is $' + total_price);
-						})
+						purchase(results.stock, answer.quantity, results.price);
 					}
-
 				})
 
 			})
-	}
+	},
+	purchase: function(in_stock, amount, cost) {
+		var new_stock = in_stock - amount;
+		connection.query('UPDATE products SET ? WHERE ?' [{stock: new_stock}, {item_id: answer.purchase}], function(err) {
+				if(err) throw err;
+			})
+		var total_price = amount * cost;
+		console.log('Your total purchase price is $' + total_price);
+	}	
 };
 
 customer.display();
