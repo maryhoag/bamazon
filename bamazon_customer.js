@@ -28,6 +28,7 @@ var customer = {
 			}
 	// body...
 		})
+		this.want_what();
 	},
 	//query what the customer wants and how many they want	
 	want_what: function() {
@@ -37,10 +38,10 @@ var customer = {
 			{ type: 'input',
 				name: 'purchase',
 				question: 'What\'s the item id of the product you want to order?'
-			},
-			{ type: 'input',
-				name: 'quantity',
-				question: 'How many do you want to purchase?'
+			//},
+			//{ type: 'input',
+				//name: 'quantity',
+				//question: 'How many do you want to purchase?'
 			}]).then(function(answer) {
 				//get the product info from the db
 				console.log('still running');
@@ -50,7 +51,7 @@ var customer = {
 					} else if(results.stock < answer.quantity) {
 						return console.log('We don\'t have enough to compete your order.');
 					} else {
-						purchase(results.stock, answer.quantity, results.price);
+						this.purchase(results.stock, answer.quantity, results.price);
 					}
 				})
 
@@ -66,5 +67,5 @@ var customer = {
 	}	
 };
 
-customer.display();
+//customer.display();
 customer.want_what();
