@@ -1,7 +1,7 @@
-//var inquirer = require('inquirer');
+var inquirer = require('inquirer');
 
 //new and improved inquirer with syntax I can acutally remember
-var inquirer = require('inquirer-promise');
+var inquirer-promise = require('inquirer-promise');
 var mysql = require('mysql');
 
 //connection deets
@@ -28,6 +28,7 @@ var manager = {
 			//these aren't running fix this
 			switch(answer) {
 				case 'View Products':
+					console.log(answer);
 					show_products();
 				break;
 
@@ -60,9 +61,13 @@ var manager = {
 	},
 
 	low_inventory: function() {
-		console.log('test');
+		//console.log('test');
 		//select items with qty < 5
-		connection.query('SELECT * FROM products WHERE stock < 5', function(error,results) {
+		inquirer-promise.input('What do you want to order?', {default: 'coffee'})
+		.then(order => function(order) {
+			console.log(order);
+			//what to select
+			connection.query('SELECT * FROM products WHERE stock < 5', function(error,results) {
 			if(error) throw error;
 			for(i = 0; i < results.length; i++) {
 				console.log(results[i].name);
@@ -71,6 +76,8 @@ var manager = {
 		})
 		//return to menu
 		manager.question();
+
+		})
 	},
 
 	replenish: function() {
