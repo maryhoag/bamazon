@@ -1,0 +1,25 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "A node-based store app",
+  "main": "bamazon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maryhoag/bamazon.git"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "Mary Hoag",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maryhoag/bamazon/issues"
+  },
+  "homepage": "https://github.com/maryhoag/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^1.0.3"
+  }
+}
