@@ -1,7 +1,7 @@
 var inquirer = require('inquirer');
 
 //new and improved inquirer with syntax I can acutally remember
-var inquirer-promise = require('inquirer-promise');
+var inquirer_promise = require('inquirer-promise');
 var mysql = require('mysql');
 
 //connection deets
@@ -22,7 +22,7 @@ connection.connect(function(error) {
 var manager = {
 	question: function() {
 		//options presented to user
-		inquirer.checkbox('Choose an option:', ['View Products', 'View Low Inventory', 'Replenish Inventory', 'Add New Products']).then(answer => function(answer) {
+		inquirer_promise.checkbox('Choose an option:', ['View Products', 'View Low Inventory', 'Replenish Inventory', 'Add New Products']).then(answer => function(answer) {
 
 			//cases
 			//these aren't running fix this
@@ -48,6 +48,8 @@ var manager = {
 	},
 
 	show_products: function() {
+
+		//this and the inquirer were running but NOT NOW. I get a node module error. No idea. I didn't edit those!!
 		//display all products available
 		connection.query('SELECT * FROM products', function(error, results) {
 			if(error) throw error;
@@ -63,7 +65,7 @@ var manager = {
 	low_inventory: function() {
 		//console.log('test');
 		//select items with qty < 5
-		inquirer-promise.input('What do you want to order?', {default: 'coffee'})
+		inquirer_promise.input('What do you want to order?', {default: 'coffee'})
 		.then(order => function(order) {
 			console.log(order);
 			//what to select
@@ -97,21 +99,21 @@ var manager = {
 
 	add_new: function() {
 		var newProduct = {};
-		inquirer.input('New product name?', {default: 'coffee'})
+		inquirer_promise.input('New product name ?', {default: 'coffee'})
 			.then(new_name => newProduct.name = new_name);
 
-		inquirer.input('New product department?')
+		inquirer_promise.input('New product department?')
 			.then(department => newProduct.department = department);
 
-		inquirer.input('New product price?')
+		inquirer_promise.input('New product price?')
 			.then(price => newProduct.price = price);
 
-		inquirer.input('New product quantity?')
+		inquirer_promise.input('New product quantity?')
 			.then(quantity => newProduct.stock = quantity);
 
 		//delay begining
 		//make seperate function?
-		connection.query('INSERT newProduct INTO products', function(error, response) {
+		connection.query('INSERT ? INTO products', function(error, response) {
 			if(error) throw error;
 			console.log('Product added.');
 		})
@@ -119,7 +121,7 @@ var manager = {
 	}
 
 
-}
+};
 
 
 //test
@@ -127,6 +129,9 @@ var manager = {
 	//.then(animal => console.log(animal));
 
 //manager.show_products();
+
 manager.question();
+
+//manager.add_new();
 
 

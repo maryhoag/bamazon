@@ -18,6 +18,7 @@ connection.connect(function(error) {
 //customer functions object
 var customer = {
 	//display products to customer
+	//this was running like 5 minutes ago. NOT NOW. idek
 	display: function() {
 		connection.query('SELECT * FROM products', function (error, results) {
 			if(error) throw error;
@@ -26,10 +27,11 @@ var customer = {
 				console.log(results[i].item_id + ' | ' + results[i].name + ' | ' + results[i].department + ' | ' +  results[i].price);
 				console.log('-----------------------------------------');
 			}
-	// body...
+			customer.want_what();
 		})
-		this.want_what();
 	},
+
+
 	//query what the customer wants and how many they want	
 	want_what: function() {
 		//inquirer function
@@ -38,34 +40,43 @@ var customer = {
 			{ type: 'input',
 				name: 'purchase',
 				question: 'What\'s the item id of the product you want to order?'
-			//},
-			//{ type: 'input',
-				//name: 'quantity',
-				//question: 'How many do you want to purchase?'
+			},
+			{ type: 'input',
+				name: 'quantity',
+				question: 'How many do you want to purchase?'
 			}]).then(function(answer) {
 				//get the product info from the db
 				console.log('still running');
 				connection.query('SELECT item_id FROM products', function(error, results) {
+
 					if(error){ 
 						throw error;
 					} else if(results.stock < answer.quantity) {
 						return console.log('We don\'t have enough to compete your order.');
 					} else {
-						this.purchase(results.stock, answer.quantity, results.price);
-					}
+						//this.purchase(results.stock, answer.quantity, results.price);
+						var new_stock = in_stock - amount;
+						connection.query('UPDATE products SET ? WHERE ?', {stock: new_stock, item_id: answer.purchase}, function(err) {
+								if(err) throw err;
+								var total_price = amount * cost;
+								console.log('Your total purchase price is $' + total_price);
+						})
+					}	
 				})
 
 			})
-	},
-	purchase: function(in_stock, amount, cost) {
-		var new_stock = in_stock - amount;
-		connection.query('UPDATE products SET ? WHERE ?' [{stock: new_stock}, {item_id: answer.purchase}], function(err) {
-				if(err) throw err;
-			})
-		var total_price = amount * cost;
-		console.log('Your total purchase price is $' + total_price);
-	}	
+	}
+// 	purchase: function(in_stock, amount, cost) {
+// 		var new_stock = in_stock - amount;
+// 		connection.query('UPDATE products SET ? WHERE ?' [{stock: new_stock}, {item_id: answer.purchase}], function(err) {
+// 				if(err) throw err;
+// 			})
+// 		var total_price = amount * cost;
+// 		console.log('Your total purchase price is $' + total_price);
+// 	}	
+// };
 };
 
-//customer.display();
-customer.want_what();
+customer.display();
+//this runs before the connection is complete but the functions are structured like the ebay example
+//customer.want_what();
