@@ -39,7 +39,7 @@ var customer = {
 		inquirer.prompt([
 			{ type: 'input',
 				name: 'purchase',
-				question: 'What\'s the item id of the product you want to order?'
+				message: 'What\'s the item id of the product you want to order?'
 			},
 			{ type: 'input',
 				name: 'quantity',
@@ -77,6 +77,6 @@ var customer = {
 // };
 };
 
-customer.display();
+//customer.display();
 //this runs before the connection is complete but the functions are structured like the ebay example
-//customer.want_what();
+customer.want_what();
