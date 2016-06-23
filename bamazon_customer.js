@@ -36,7 +36,7 @@ var customer = {
 	//query what the customer wants and how many they want	
 	want_what: function(results) {
 		//inquirer function
-		console.log('i run');
+		//console.log('i run');
 		inquirer.prompt([
 			{ //queries item id of purchase
 				type: 'input',
@@ -50,36 +50,42 @@ var customer = {
 		}]).then(function(answer) {
 				//get the product info from the db
 
-				console.log('still running');
-
+				//console.log('still running');
+				//create an empty object
 				var ordered_item = {};
-
+				//loop over the array of results from the query
 				for(var i = 0; i < results.length; i++) {
 					if(results[i].item_id == answer.purchase_id) {
-						ordered_item.item_id = results[i].item_id;
-						ordered_item.name = 	results[i].name;
+						//add the price and stock quantity to the object
 						ordered_item.price = results[i].price;
 						ordered_item.stock = results[i].stock;
 					}
 				};
 				//console.log(ordered_item);
-				console.log(ordered_item.stock);
-				console.log(answer.quantity);
-				console.log(parseInt(ordered_item.stock) === 12);
-				console.log(parseInt(answer.quantity) === 1);
-				
+				//console.log(ordered_item.stock);
+				//console.log(answer.quantity);
+				//console.log(parseInt(ordered_item.stock) === 12);
+				//console.log(parseInt(answer.quantity) === 1);
+
+
+				//compare the order quantity with the quantity in stock
 			 	if(parseInt(ordered_item.stock) < parseInt(answer.quantity)) {
+			 			//if insufficent
 						return console.log('We don\'t have enough to compete your order.');
 
 					} else {
+						//if sufficent stock, place order
 						//this.purchase(results.stock, answer.quantity, results.price);
 
+						//the updated stock quantity
 						var new_stock = ordered_item.stock - answer.quantity;
-						console.log(new_stock);
-
+						//console.log(new_stock);
+						//update the db
 						connection.query('UPDATE products SET ? WHERE ?', [{stock: new_stock}, {item_id: answer.purchase_id}], function(err) {
 								if(err) throw err;
+								//calculate total price
 								var total_price = ordered_item.price * answer.quantity;
+								//diplay to user
 								console.log('Your total purchase price is $' + total_price);
 						})//closes query
 					}//closes else
